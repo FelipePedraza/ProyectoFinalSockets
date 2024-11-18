@@ -38,3 +38,35 @@ nov 16, 2024 8:34:19 P. M. com.proyectofinal.modelo.AdministradorLogger escrib
 GRAVE: No se pudo abrir la ventana para ver el muro principal: javafx.fxml.LoadException: 
 /C:/Users/FELIPE/Downloads/ProyectoFinalSockets/cliente/target/classes/com/proyectofinal/muro.fxml
 
+nov 17, 2024 9:32:31 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+GRAVE: javafx.fxml.LoadException: Error resolving onAction='#SolicitudesBoton', either the event handler is not in the Namespace or there is an error in the script.
+/C:/Users/FELIPE/Downloads/ProyectoFinalSockets/cliente/target/classes/com/proyectofinal/perfilVendedor.fxml:53
+Error al cambiar de escena.
+nov 17, 2024 9:39:12 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+GRAVE: javafx.fxml.LoadException: Error resolving onAction='#SolicitudesBoton', either the event handler is not in the Namespace or there is an error in the script.
+/C:/Users/FELIPE/Downloads/ProyectoFinalSockets/cliente/target/classes/com/proyectofinal/perfilVendedor.fxml:53
+Error al cambiar de escena.
+nov 17, 2024 9:55:39 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Felipe
+nov 17, 2024 9:55:51 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Juanes
+nov 17, 2024 9:57:59 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Solicitud enviada a Felipe
+nov 17, 2024 10:36:52 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+ADVERTENCIA: Nombre o cédula no coinciden.
+nov 17, 2024 10:37:07 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Felipe
+nov 17, 2024 10:37:19 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Juanes
+nov 17, 2024 10:44:10 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Solicitud enviada a Felipe
+nov 17, 2024 10:55:20 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Felipe
+nov 17, 2024 10:55:36 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Juanes
+nov 17, 2024 11:09:55 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Felipe
+nov 17, 2024 11:10:12 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Juanes
+nov 17, 2024 11:12:22 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Solicitud enviada a Felipe

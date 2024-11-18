@@ -1,16 +1,23 @@
 package com.proyectofinal.controlador;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
+import com.proyectofinal.modelo.AdministradorLogger;
 import com.proyectofinal.modelo.Producto;
 import com.proyectofinal.modelo.Publicacion;
 import com.proyectofinal.modelo.Vendedor;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -59,10 +66,24 @@ public class PublicacionController {
     private boolean likeDado = false;
     private Vendedor vendedorActual;
     private Publicacion publicacion;
+    private Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
     @FXML
     void AgregarComentario() {
 
+    }
+
+    private void conectarAlServidor() {
+        try {
+            socket = new Socket("localhost", 5000);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No se pudo conectar al servidor.", e.toString());
+            AdministradorLogger.getInstance().escribirLog(AgregarProductoController.class, "Error de conexión con el servidor.", Level.SEVERE);
+        }
     }
 
     @FXML
@@ -78,8 +99,23 @@ public class PublicacionController {
 
     }
 
-    public void SolicitudContacto(){
+    public void SolicitudContacto() throws ClassNotFoundException, IOException{
+        conectarAlServidor();
+        Vendedor remitente = vendedorActual;
+        Vendedor destinatario = publicacion.getVendedor();
+        out.writeObject("ENVIAR_SOLICITUD");
+        out.writeObject(remitente);
+        out.writeObject(destinatario);
+        out.flush();
 
+        String respuesta = (String) in.readObject();
+        if (respuesta.startsWith("EXITO")){
+            mostrarInformacion("EXITO", "Solicitud enviada", "La solicitud fue enviada a " + destinatario.getNombre() + destinatario.getApellidos() );
+            AdministradorLogger.getInstance().escribirLog(PublicacionController.class, "Solicitud enviada a " + destinatario.getNombre(), Level.INFO);
+        }
+        else{
+            mostrarAlerta("ERROR", "Solicitud no enviada", "Error enviando la solicitud");
+        }
     }
 
     public void setVendedorActual(Vendedor vendedor) {
@@ -120,6 +156,22 @@ public class PublicacionController {
             solicitudContactoButton.setVisible(true);
         }
         
+    }
+
+    private void mostrarAlerta(String titulo, String encabezado, String contenido) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(encabezado);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
+
+    private void mostrarInformacion(String titulo, String encabezado, String contenido) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION); // Cambiar a tipo de alerta de información
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(encabezado);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
     }
 
 }

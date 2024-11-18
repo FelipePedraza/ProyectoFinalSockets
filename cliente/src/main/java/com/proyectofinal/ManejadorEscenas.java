@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import com.proyectofinal.controlador.MuroController;
 import com.proyectofinal.controlador.PerfilVendedorController;
+import com.proyectofinal.controlador.SolicitudesController;
 import com.proyectofinal.modelo.AdministradorLogger;
 import com.proyectofinal.modelo.Vendedor;
 
@@ -46,7 +47,7 @@ public class ManejadorEscenas {
         primaryStage.show();
     }
     //cambiar escena con datos
-    public static void cambiarEscenaConDatos(String fxml, Vendedor vendedor) throws IOException {
+    public static void cambiarEscenaConDatos(String fxml, Vendedor vendedor) throws IOException, ClassNotFoundException {
         if (primaryStage == null) {
             AdministradorLogger.getInstance().escribirLog(ManejadorEscenas.class, "Stage no ha sido inicializado.", Level.WARNING);
             throw new IllegalStateException("Stage no ha sido inicializado.");
@@ -55,6 +56,13 @@ public class ManejadorEscenas {
         FXMLLoader loader = new FXMLLoader(ManejadorEscenas.class.getResource(fxml + ".fxml"));
         Parent root = loader.load();
         Scene newScene = new Scene(root);
+
+        if ("solicitudes".equals(fxml)) {
+            SolicitudesController solicitudesController = loader.getController();
+            solicitudesController.setVendedorActual(vendedor);
+            solicitudesController.inicializarDatos();
+            primaryStage.setScene(newScene);
+        }
 
         if ("muro".equals(fxml)) {
             MuroController muroController = loader.getController();

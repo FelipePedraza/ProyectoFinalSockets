@@ -10,6 +10,7 @@ import com.proyectofinal.modelo.AdministradorArchivo;
 import com.proyectofinal.modelo.AdministradorPersistencia;
 import com.proyectofinal.modelo.AdministradorPropiedades;
 import com.proyectofinal.modelo.HiloCliente;
+import com.proyectofinal.modelo.MarketPlaceServicios;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -44,6 +45,7 @@ public class ServidorApp extends Application {
         AdministradorPropiedades propiedades = new AdministradorPropiedades();
         AdministradorArchivo.crearEstructuraCarpetas(propiedades);
         AdministradorPersistencia.realizarRespaldoCompleto();
+        MarketPlaceServicios.getInstance().generarReporte();
         try {
             new ServidorApp().iniciar();
         } catch (IOException e) {
@@ -53,6 +55,6 @@ public class ServidorApp extends Application {
 
     @Override
     public void start(Stage arg0) {
-        // Método vacío, puedes personalizar la interfaz aquí en el futuro si es necesario.
+        
     }
 }

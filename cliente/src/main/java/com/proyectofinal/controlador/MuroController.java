@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
+import com.proyectofinal.ManejadorEscenas;
 import com.proyectofinal.modelo.AdministradorLogger;
 import com.proyectofinal.modelo.Publicacion;
 import com.proyectofinal.modelo.Vendedor;
@@ -16,6 +17,7 @@ import com.proyectofinal.modelo.Vendedor;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -30,12 +32,22 @@ public class MuroController {
     @FXML
     private VBox publicacionesVBox;
 
+    @FXML
+    private Button regresarButton;
+
     private Vendedor vendedorActual;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-
+    public void Regresar() throws ClassNotFoundException{
+        try {
+            ManejadorEscenas.cambiarEscenaConDatos("perfilVendedor", vendedorActual);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AdministradorLogger.getInstance().escribirLog(LoginController.class, e.toString() + "Error al cambiar de escena.", Level.SEVERE);
+        }
+    }
     private void conectarAlServidor() {
         try {
             socket = new Socket("localhost", 5000);

@@ -78,7 +78,7 @@ public class AdministradorPersistencia {
      public static void realizarRespaldoCompleto() throws IOException {
 
         // Lista de archivos de datos que queremos respaldar
-        String[] archivosDeDatos = { "Vendedores.dat", "Productos.dat" };
+        String[] archivosDeDatos = { "Vendedores.dat", "Productos.dat", "Publicaciones.dat" };
 
         // Obtener la fecha y hora actual para el nombre del respaldo
         String tiempo = new SimpleDateFormat("ddMMyy_HHmmss").format(new Date());

@@ -12,6 +12,7 @@ public class Publicacion implements Serializable{
     private Vendedor vendedor;
     private List<Comentario> comentarios;
     private LocalDateTime fechaPublicacion;
+    private double meGusta;
 
     // Constructor
     public Publicacion(Vendedor vendedor, Producto producto, LocalDateTime fechaPublicacion) {
@@ -19,6 +20,7 @@ public class Publicacion implements Serializable{
         this.comentarios = new ArrayList<>();
         this.fechaPublicacion = fechaPublicacion;
         this.vendedor = vendedor;
+        this.meGusta = 0;
     }
     // Gets y sets
     public Vendedor getVendedor() {
@@ -46,6 +48,13 @@ public class Publicacion implements Serializable{
 
     public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
+    }
+
+    public double getMeGusta() {
+        return meGusta;
+    }
+    public void setMeGusta(double meGusta) {
+        this.meGusta = meGusta;
     }
 
 }

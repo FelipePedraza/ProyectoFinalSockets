@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import com.proyectofinal.excepciones.AlreadyRegisteredUser;
+import com.proyectofinal.excepciones.ContactAlreadyExistsException;
 
 public class HiloCliente implements Runnable {
 
@@ -111,7 +112,47 @@ public class HiloCliente implements Runnable {
                     out.writeObject(productosVendidos);
                     out.writeObject("EXITO");
                     out.flush();
-                break;   
+                break;
+                case "ENVIAR_SOLICITUD":
+                    Vendedor remitente = (Vendedor) in.readObject();
+                    Vendedor destinatario = (Vendedor) in.readObject();
+                    try {
+                        MarketPlaceServicios.getInstance().enviarSolicitud(remitente, destinatario);
+                        out.writeObject("EXITO");
+                        out.flush();
+                    } catch (ContactAlreadyExistsException e) {
+                        AdministradorLogger.getInstance().escribirLog(MarketPlaceServicios.class, e.toString(), Level.WARNING);
+                    }
+                break;
+                case "CARGAR_SOLICITUDES":
+                    Vendedor vendedorSolicitudes = (Vendedor) in.readObject();
+                    List<SolicitudAmistad> solicitudAmistades = vendedorSolicitudes.getSolicitudesRecibidas();
+                    out.writeObject(solicitudAmistades);
+                    out.flush();
+                break;
+                case "ACEPTAR_SOLICITUD":
+                    Vendedor vendedorAceptar = (Vendedor) in.readObject();
+                    SolicitudAmistad solicitudSeleccionada = (SolicitudAmistad) in.readObject();
+                    MarketPlaceServicios.getInstance().aceptarSolicitud(vendedorAceptar, solicitudSeleccionada);
+                    out.writeObject(vendedorAceptar);
+                    out.writeObject("EXITO");
+                    out.flush();
+                break;
+                case "RECHAZAR_SOLICITUD":
+                    Vendedor vendedorRechazar = (Vendedor) in.readObject();
+                    SolicitudAmistad solicitudEscogida = (SolicitudAmistad) in.readObject();
+                    MarketPlaceServicios.getInstance().rechazarSolicitud(vendedorRechazar, solicitudEscogida);
+                    out.writeObject(vendedorRechazar);
+                    out.writeObject("EXITO");
+                    out.flush();
+                break;  
+                case "CARGAR_CONTACTOS":
+                    List<Vendedor> contactos = null;
+                    Vendedor vendedorActual3 = (Vendedor) in.readObject();
+                    contactos = vendedorActual3.getContactos();
+                    out.writeObject(contactos);
+                    out.flush();
+                    break;      
                 default:
                     out.writeObject("Comando no reconocido.");
                     out.flush();

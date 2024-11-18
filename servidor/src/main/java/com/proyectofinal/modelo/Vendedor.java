@@ -18,6 +18,7 @@ public class Vendedor  implements Serializable {
     private List<Vendedor> contactos;   // Lista de contactos (vendedores aliados)
     private Muro muro;                  // Muro donde se publican productos y mensajes
     private List<Producto> productos;   // Lista de productos del vendedor
+    private List<SolicitudAmistad> solicitudesRecibidas;
 
     public Vendedor(String nombre, String apellidos, int cedula, String direccion) {
         this.nombre = nombre;
@@ -27,6 +28,7 @@ public class Vendedor  implements Serializable {
         this.contactos = new ArrayList<>();
         this.muro = new Muro();         // Crear un muro vacío para el vendedor
         this.productos = new ArrayList<>(); // Inicializar la lista de productos
+        this.solicitudesRecibidas = new ArrayList<>();
     }
 
     // Getters y Setters
@@ -74,17 +76,28 @@ public class Vendedor  implements Serializable {
         return productos; // Getter para obtener la lista de productos
     }
 
-    // Métodos para gestionar los contactos
-    public void agregarContacto(Vendedor nuevoContacto) {
-        if (!contactos.contains(nuevoContacto)) {
-            contactos.add(nuevoContacto);
-            nuevoContacto.getContactos().add(this);  // Vinculación bidireccional
+    public void setSolicitudesRecibidas(List<SolicitudAmistad> solicitudesRecibidas) {
+        this.solicitudesRecibidas = solicitudesRecibidas;
+    }
+
+    // Métodos para manejar contactos
+    public void agregarContacto(Vendedor contacto) {
+        if (!contactos.contains(contacto)) {
+            contactos.add(contacto);
         }
     }
 
-    public void eliminarContacto(Vendedor contacto) {
-        contactos.remove(contacto);
-        contacto.getContactos().remove(this);  // Eliminar la relación bidireccional
+    public boolean esContacto(Vendedor vendedor) {
+        return contactos.contains(vendedor);
+    }
+
+    // Métodos para manejar solicitudes
+    public void recibirSolicitud(SolicitudAmistad solicitud) {
+        solicitudesRecibidas.add(solicitud);
+    }
+
+    public List<SolicitudAmistad> getSolicitudesRecibidas() {
+        return solicitudesRecibidas;
     }
 
     // Método para publicar un producto en el muro y la lista de productos
@@ -133,4 +146,49 @@ public class Vendedor  implements Serializable {
                 ", muro=" + muro +
                 '}';
     }
+
+    public String toStringReporte(){
+        String registro = nombre + " - " + cedula + "\n";
+        if(productos.isEmpty()){
+            return (registro += "-sin productos- \n");
+        }else{
+            return (registro += listarProductos());
+        }
+    }
+
+    public String listarProductos(){
+        List<Producto> publicados = new ArrayList<>();                
+        List<Producto> vendidos = new ArrayList<>();
+
+        for(Producto producto : productos){
+            if(producto.getEstado().equals(Estado.PUBLICADO)){
+                publicados.add(producto);
+            }
+            if(producto.getEstado().equals(Estado.VENDIDO)){
+                vendidos.add(producto);
+            }
+        }
+
+        String lista = "";
+        
+        if(!publicados.isEmpty()){
+            int i = 1;
+            lista += "Productos Publicados: \n";
+            for(Producto pro : publicados){
+                lista += i + "-" + pro.getNombre() + ", $" + pro.getPrecio() + "\n";
+                i++;
+            }
+        }
+        if(!vendidos.isEmpty()){
+            int j = 1;
+            lista += "Productos Vendidos: \n";
+            for(Producto pro : vendidos){
+                lista += j + "-" + pro.getNombre() + ", $" + pro.getPrecio() + "\n";
+                j++;
+            }
+        }
+
+        return lista;
+    }
+
 }

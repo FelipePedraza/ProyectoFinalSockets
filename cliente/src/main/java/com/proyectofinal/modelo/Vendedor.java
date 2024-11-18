@@ -14,6 +14,7 @@ public class Vendedor  implements Serializable {
     private List<Vendedor> contactos;   // Lista de contactos (vendedores aliados)
     private Muro muro;                  // Muro donde se publican productos y mensajes
     private List<Producto> productos;   // Lista de productos del vendedor
+    private List<SolicitudAmistad> solicitudesRecibidas;
 
     public Vendedor(String nombre, String apellidos, int cedula, String direccion) {
         this.nombre = nombre;
@@ -23,6 +24,7 @@ public class Vendedor  implements Serializable {
         this.contactos = new ArrayList<>();
         this.muro = new Muro();         // Crear un muro vacío para el vendedor
         this.productos = new ArrayList<>(); // Inicializar la lista de productos
+        this.solicitudesRecibidas = new ArrayList<>();
     }
 
     // Getters y Setters
@@ -68,6 +70,14 @@ public class Vendedor  implements Serializable {
 
     public List<Producto> getProductos() {
         return productos; // Getter para obtener la lista de productos
+    }
+
+    public List<SolicitudAmistad> getSolicitudesRecibidas() {
+        return solicitudesRecibidas;
+    }
+
+    public void setSolicitudesRecibidas(List<SolicitudAmistad> solicitudesRecibidas) {
+        this.solicitudesRecibidas = solicitudesRecibidas;
     }
 
     @Override

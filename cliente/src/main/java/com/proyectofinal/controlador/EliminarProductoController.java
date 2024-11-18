@@ -114,7 +114,7 @@ public class EliminarProductoController {
             out.writeObject(vendedorActual);
             out.writeObject(productoSeleccionado);
             out.flush();
-            vendedorActual = (Vendedor) in.readObject();
+            this.vendedorActual = (Vendedor) in.readObject();
             String mensajeServidor = (String) in.readObject();
             if(mensajeServidor.equals("EXITO")){
                 tablaProductos.getItems().remove(productoSeleccionado);

@@ -16,6 +16,8 @@ import com.proyectofinal.modelo.Producto;
 import com.proyectofinal.modelo.Publicacion;
 import com.proyectofinal.modelo.Vendedor;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,10 +45,10 @@ public class EstadisticasController {
     private TableView<Producto> productosVendidosLista;
 
     @FXML
-    private TableView<String> comentariosLista;
+    private TableView<Comentario> comentariosLista;
 
     @FXML
-    private TableColumn<String, String> columnaComentarios;
+    private TableColumn<Comentario, String> columnaComentarios;
 
     @FXML
     private Button generarReporteButton;
@@ -64,13 +66,10 @@ public class EstadisticasController {
     private ObjectInputStream in;
 
     @FXML
-    void generarReporte(ActionEvent event) {
-
-    }
-
-    @FXML
     void initialize() {
+        cargarMeGusta();
         cargarComentarios();
+        cargarProductosVendidos();
 
     }
 
@@ -86,19 +85,43 @@ public class EstadisticasController {
     }
 
     @SuppressWarnings("unchecked")
+    private void cargarMeGusta(){
+        conectarAlServidor();
+        try{
+            out.writeObject("CARGAR_PUBLICACIONES");
+            out.writeObject(vendedorActual);
+            out.flush();
+
+            List<Publicacion> publicaciones = (List<Publicacion>) in.readObject();
+            int cantidadMeGusta = 0;
+
+            for (Publicacion publicacion : publicaciones) {
+                cantidadMeGusta += publicacion.getMeGusta();
+            }
+
+            meGustaLabel.setText("Me Gusta recibidos: " + cantidadMeGusta);
+
+        } catch (IOException | ClassNotFoundException e) {
+            AdministradorLogger.getInstance().escribirLog(EstadisticasController.class, "Error al cargar cantidad de Me Gusta: " + e.toString(), Level.WARNING);
+        }
+    }
+    
+
+    @SuppressWarnings("unchecked")
     private void cargarComentarios() {
         conectarAlServidor();
+        columnaComentarios.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getContenido()));
         try {
             out.writeObject("CARGAR_PUBLICACIONES");
             out.writeObject(vendedorActual);
             out.flush();
-            List<Publicacion> productosPublicados = (List<Publicacion>) in.readObject();
-            ObservableList<String> comentarios = FXCollections.observableArrayList();
-            for (Publicacion productoPublicado : productosPublicados) {
-                if(productoPublicado.getVendedor() == vendedorActual){
-                    for(Comentario comentario : productoPublicado.getComentarios()){
-                        comentarios.add(comentario.getContenido());
-                    }
+
+            List<Publicacion> publicaciones = (List<Publicacion>) in.readObject();
+            ObservableList<Comentario> comentarios = FXCollections.observableArrayList();
+
+            for (Publicacion publicacion : publicaciones) {
+                for(Comentario comen : publicacion.getComentarios()){
+                    comentarios.add(comen);
                 }
             }
             comentariosLista.setItems(comentarios);
@@ -107,24 +130,34 @@ public class EstadisticasController {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void cargarProductosVendidos(){
         conectarAlServidor();
+        columnaProductos.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoria()));
+        columnaPrecios.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrecio()));
         try {
-            out.writeObject("CARGAR_PRODUCTOS");
+            out.writeObject("CARGAR_PRODUCTOS_VENDIDOS");
             out.writeObject(vendedorActual);
             out.flush();
+
             List<Producto> productos = (List<Producto>) in.readObject();
-            ObservableList<Producto> productosPublicados = FXCollections.observableArrayList();
+            ObservableList<Producto> productosIncluidos = FXCollections.observableArrayList();
+
             for (Producto producto : productos) {
                 if(producto.getEstado().equals(Estado.VENDIDO)){
-                    
+                    productosIncluidos.add(producto);
                 }
             }
-            productosVendidosLista.setItems(productosPublicados);
+            productosVendidosLista.getItems().setAll(productosIncluidos);
         } catch (IOException | ClassNotFoundException e) {
-            AdministradorLogger.getInstance().escribirLog(EstadisticasController.class, "Error al cargar comentarios: " + e.toString(), Level.WARNING);
+            AdministradorLogger.getInstance().escribirLog(EstadisticasController.class, "Error al cargar lista de productos vendidos: " + e.toString(), Level.WARNING);
         }
 
+    }
+
+        @FXML
+    void generarReporte(ActionEvent event) {
+        
     }
 
 }

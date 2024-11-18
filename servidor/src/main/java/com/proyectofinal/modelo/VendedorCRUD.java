@@ -93,7 +93,6 @@ public class VendedorCRUD {
                 e.printStackTrace();
                 AdministradorLogger.getInstance().escribirLog(VendedorCRUD.class, e.toString(), java.util.logging.Level.SEVERE);
             }
-            System.out.println(vendedorActualizado);
             AdministradorLogger.getInstance().escribirLog(VendedorCRUD.class, "Vendedor actualizado correctamente.", java.util.logging.Level.INFO);
         } else {
             AdministradorLogger.getInstance().escribirLog(VendedorCRUD.class, "No se encontró un vendedor con la cédula: " + vendedorActualizado.getCedula(), java.util.logging.Level.INFO);

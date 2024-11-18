@@ -51,6 +51,12 @@ public class PerfilVendedorController {
     @FXML
     private Button muroBoton;
 
+    @FXML
+    private Button contactoButton;
+
+    @FXML
+    private Button solicitudesButton;
+
     private Vendedor vendedorActual;
 
     private Socket socket;
@@ -138,8 +144,7 @@ public class PerfilVendedorController {
         
     }
     public void EliminarBoton() throws ClassNotFoundException{
-        conectarAlServidor();
-         try {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/proyectofinal/eliminarProductos.fxml"));
             Parent root = loader.load();
             EliminarProductoController eliminarProductoController = loader.getController();
@@ -167,7 +172,7 @@ public class PerfilVendedorController {
     }
 
     @FXML
-    public void verMuro() {
+    public void MuroBoton() throws ClassNotFoundException {
         try {
             ManejadorEscenas.cambiarEscenaConDatos("muro", vendedorActual);
         } catch (IOException e) {
@@ -183,5 +188,51 @@ public class PerfilVendedorController {
         alerta.setHeaderText(encabezado);
         alerta.setContentText(contenido);
         alerta.showAndWait();
+    }
+
+    public void SolicitudesBoton() throws ClassNotFoundException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/proyectofinal/solicitudes.fxml"));
+            Parent root = loader.load();
+            SolicitudesController solicitudesController = loader.getController();
+            // Cargar el vendedor y productos en la ventana
+            solicitudesController.setVendedorActual(vendedorActual);
+            solicitudesController.setPerfilVendedorController(this);
+            solicitudesController.inicializarDatos();
+
+            // Mostrar la ventana
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Solicitudes");
+            stage.showAndWait();
+
+        } catch (IOException | ClassCastException e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir la ventana de solicitudes. ", "Error cargando las solicitudes");
+            AdministradorLogger.getInstance().escribirLog(PerfilVendedorController.class, "No se pudo abrir la ventana de solicitudes." + e.toString(), Level.WARNING);
+        }
+    }
+
+    public void ContactoBoton() throws ClassNotFoundException{
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/proyectofinal/contactos.fxml"));
+            Parent root = loader.load();
+            ContactosController contactosController = loader.getController();
+            // Cargar el vendedor y productos en la ventana
+            contactosController.setVendedorActual(vendedorActual);
+            contactosController.setPerfilVendedorController(this);
+            contactosController.inicializarDatos();
+
+            // Mostrar la ventana
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Contactos");
+            stage.showAndWait();
+
+        } catch (IOException | ClassCastException e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir la ventana de contactos. ", "Error cargando los contactos");
+            AdministradorLogger.getInstance().escribirLog(PerfilVendedorController.class, "No se pudo abrir la ventana de contactos." + e.toString(), Level.WARNING);
+        }
     }
 }

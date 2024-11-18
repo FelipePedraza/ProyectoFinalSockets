@@ -111,5 +111,4 @@ public class Producto implements Serializable {
         this.imagenNombre = imagenNombre;
     }
 
-    // Otros Getters y Setters omitidos por brevedad
 }

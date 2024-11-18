@@ -1,6 +1,10 @@
 package com.proyectofinal.modelo;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 
 public class AdministradorArchivo {
@@ -70,6 +74,23 @@ public class AdministradorArchivo {
             }
         } else {
             AdministradorLogger.getInstance().escribirLog(AdministradorArchivo.class, "La imagen no existe: " + nombreImagen, Level.INFO);
+        }
+    }
+
+    public static void generarReporte(List<Vendedor> vendedores, String nombreArchivo, LocalDate fecha) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(AdministradorPropiedades.getInstance().getRuta("archivos.directory")+ "/" + nombreArchivo + "_" + fecha + ".txt"));
+            writer.write("-----Reporte de vendedores y productos-----\n");
+            writer.write("--Fecha del reporte: " + fecha + "--\n");
+
+            for(Vendedor vendedor : vendedores){
+                writer.write(vendedor.toStringReporte());
+            }
+            writer.close();
+            AdministradorLogger.getInstance().escribirLog(AdministradorArchivo.class, "Reporte de vendedores generado.", Level.INFO);
+            
+        } catch (IOException e) {
+            AdministradorLogger.getInstance().escribirLog(AdministradorArchivo.class, "No se pudo generar el reporte de los vendedores.", Level.WARNING);
         }
     }
 }

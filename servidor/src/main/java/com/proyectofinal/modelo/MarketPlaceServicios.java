@@ -1,9 +1,12 @@
 package com.proyectofinal.modelo;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.proyectofinal.excepciones.AlreadyRegisteredUser;
+import com.proyectofinal.excepciones.ContactAlreadyExistsException;
 
 public class MarketPlaceServicios {
 
@@ -52,6 +55,43 @@ public class MarketPlaceServicios {
 
     public List<Publicacion> cargarPublicaciones() {
         return publicacionCrud.obtenerTodosLasPublicaciones();
+    }
+
+    public void enviarSolicitud(Vendedor remitente, Vendedor destinatario) throws IOException, ContactAlreadyExistsException {
+        if (remitente.esContacto(destinatario)) {
+            throw new ContactAlreadyExistsException();
+        }
+    
+        // Crear la solicitud
+        SolicitudAmistad solicitud = new SolicitudAmistad(remitente, destinatario);
+    
+        // Guardar la solicitud en el destinatario
+        destinatario.recibirSolicitud(solicitud);
+    
+        vendedorCRUD.actualizarVendedor(destinatario);
+    
+        AdministradorLogger.getInstance().escribirLog(MarketPlaceServicios.class, "Solicitud enviada a " + destinatario.getNombre(), Level.INFO);
+    }
+
+    public void aceptarSolicitud(Vendedor vendedorAcepta, SolicitudAmistad solicitud) throws IOException{
+
+        vendedorAcepta.getSolicitudesRecibidas().removeIf(s -> solicitud.getRemitente().equals(s.getRemitente()));
+        vendedorAcepta.agregarContacto(solicitud.getRemitente());
+        solicitud.getRemitente().agregarContacto(vendedorAcepta);;
+        vendedorCRUD.actualizarVendedor(vendedorAcepta);
+        vendedorCRUD.actualizarVendedor(solicitud.getRemitente());
+        
+        
+    }
+
+    public void generarReporte(){
+        List<Vendedor> vendedores =  vendedorCRUD.obtenerTodosLosVendedores();
+        AdministradorArchivo.generarReporte(vendedores, "reporteVendedores" , LocalDate.now());
+    }
+
+    public void rechazarSolicitud(Vendedor vendedorRechazar, SolicitudAmistad solicitudEscogida) throws IOException {
+        vendedorRechazar.getSolicitudesRecibidas().removeIf(s -> solicitudEscogida.getRemitente().equals(s.getRemitente()));
+        vendedorCRUD.actualizarVendedor(vendedorRechazar);
     }
     
 }
