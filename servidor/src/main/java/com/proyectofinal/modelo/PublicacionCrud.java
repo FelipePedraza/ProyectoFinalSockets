@@ -63,7 +63,7 @@ public class PublicacionCrud {
     }
 
     // Método para actualizar un publicacion
-    public void actualizarProducto(Publicacion publicacionActualizado) throws IOException {
+    public void actualizarPublicacion(Publicacion publicacionActualizado) throws IOException {
         List<Publicacion> publicaciones = obtenerTodosLasPublicaciones();
         boolean encontrado = false;
 
@@ -97,7 +97,7 @@ public class PublicacionCrud {
     }
 
     // Método para eliminar un publicacion
-    public void eliminarProducto(Publicacion publicacion) throws IOException {
+    public void eliminarPublicacion(Publicacion publicacion) throws IOException {
         List<Publicacion> publicaciones = obtenerTodosLasPublicaciones();
         boolean eliminado = false;
 

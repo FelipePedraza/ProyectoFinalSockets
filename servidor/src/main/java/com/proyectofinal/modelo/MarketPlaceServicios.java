@@ -42,6 +42,13 @@ public class MarketPlaceServicios {
     public void eliminarProducto(Vendedor vendedor, Producto producto) throws IOException {
         vendedor.getProductos().removeIf(p -> producto.getCodigo().equals(p.getCodigo()));
         productoCRUD.eliminarProducto(producto);
+        if(producto.getEstado().equals(Estado.PUBLICADO)){
+            for(Publicacion pu : vendedor.getMuro().getProductosPublicados()){
+                if(producto.equals(pu.getProducto())){
+                    publicacionCrud.eliminarPublicacion(pu);
+                }
+            }
+        }
         vendedorCRUD.actualizarVendedor(vendedor);
         AdministradorArchivo.eliminarImagen(producto.getImagenNombre());
     }

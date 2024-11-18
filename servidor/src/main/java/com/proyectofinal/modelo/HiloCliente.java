@@ -102,7 +102,10 @@ public class HiloCliente implements Runnable {
                     break;
                 case "CARGAR_PRODUCTOS_VENDIDOS":
                     Vendedor vendedorVendidos = (Vendedor) in.readObject();
-                    List<Producto> productosVendedor = vendedorVendidos.getProductos();
+                    List<Producto> productosVendedor = new ArrayList<>();
+                    for(Producto p : vendedorVendidos.getProductos()){
+                        productosVendedor.add(p);
+                    } 
                     List<Producto> productosVendidos = new ArrayList<>();
                     for(Producto p : productosVendedor){
                         if(p.getEstado().equals(Estado.VENDIDO)){

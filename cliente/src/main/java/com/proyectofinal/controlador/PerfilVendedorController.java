@@ -167,8 +167,14 @@ public class PerfilVendedorController {
     }
 
     @FXML
-    public void verEstadisticas() {
-
+    public void verEstadisticas() throws ClassNotFoundException{
+        try {
+            ManejadorEscenas.cambiarEscenaConDatos("estadisticas", vendedorActual);
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo abrir la ventana para ver las estadísticas.", e.toString());
+            AdministradorLogger.getInstance().escribirLog(PerfilVendedorController.class, "No se pudo abrir la ventana para ver las estadísticas " + e.toString(), Level.SEVERE);  
+        }
     }
 
     @FXML

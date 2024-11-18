@@ -70,3 +70,15 @@ nov 17, 2024 11:10:12 P. M. com.proyectofinal.modelo.AdministradorLogger escri
 INFORMACIÓN: Vendedor registrado: Juanes
 nov 17, 2024 11:12:22 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
 INFORMACIÓN: Solicitud enviada a Felipe
+nov 17, 2024 11:23:48 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Vendedor registrado: Felipe
+nov 17, 2024 11:32:38 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+INFORMACIÓN: Solicitud enviada a Juanes
+nov 17, 2024 11:46:50 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+ADVERTENCIA: Error al cargar lista de productos vendidos: java.io.EOFException
+nov 17, 2024 11:53:29 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+GRAVE: Error de conexión con el servidor.
+nov 17, 2024 11:53:40 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+ADVERTENCIA: Error al cargar lista de productos vendidos: java.io.EOFException
+nov 17, 2024 11:53:42 P. M. com.proyectofinal.modelo.AdministradorLogger escribirLog
+ADVERTENCIA: Error al cargar lista de productos vendidos: java.io.EOFException
